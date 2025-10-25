@@ -14,21 +14,16 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    # Create writable local directories
-                    mkdir -p $PWD/.npm-global
-                    mkdir -p $PWD/.npm
-
-                     # Tell npm to use them instead of root-owned paths
-                     npm config set prefix $PWD/.npm-global
-                     npm config set cache $PWD/.npm
-
-                     # Add the local bin to PATH so global installs work
-                     export PATH=$PWD/.npm-global/bin:$PATH
-
-                     # Run install using safe cache directory
-                     npm ci --cache $PWD/.npm
-                     npm run build
-                     ls -la
+                    set -eux
+                    echo "Running as $(whoami)"
+                    mkdir -p $PWD/.npm-global $PWD/.npm
+                    export NPM_CONFIG_USERCONFIG=$PWD/.npmrc
+                    npm config set prefix $PWD/.npm-global
+                    npm config set cache $PWD/.npm
+                    export PATH=$PWD/.npm-global/bin:$PATH
+                    npm ci --cache $PWD/.npm
+                    npm run build
+                    ls -la
                 '''
             }
         }

@@ -14,8 +14,9 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    mkdir -p ~/.npm
-                    npm ci --cache ~/.npm
+                    mkdir -p $PWD/.npm
+                    npm config set cache $PWD/.npm --global
+                    npm ci
                     npm run build
                     ls -la
                 '''

@@ -12,13 +12,23 @@ pipeline {
             steps {
                 sh '''
                     ls -la
-                    npm config set prefix ~/.npm-global
-                    export PATH=$HOME/.npm-global/bin:$PATH
                     node --version
-                    npm --version0
-                    npm ci
-                    npm run build
-                    ls -la
+                    npm --version
+                    # Create writable local directories
+                    mkdir -p $PWD/.npm-global
+                    mkdir -p $PWD/.npm
+
+                     # Tell npm to use them instead of root-owned paths
+                     npm config set prefix $PWD/.npm-global
+                     npm config set cache $PWD/.npm
+
+                     # Add the local bin to PATH so global installs work
+                     export PATH=$PWD/.npm-global/bin:$PATH
+
+                     # Run install using safe cache directory
+                     npm ci --cache $PWD/.npm
+                     npm run build
+                     ls -la
                 '''
             }
         }

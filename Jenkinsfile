@@ -50,7 +50,7 @@ pipeline {
                     export PATH=$PWD/.npm-global/bin:$PATH
                     echo "Test stage"
                     ls -l
-                    sh 'test -f build/index.html'
+                    sh 'sh -c "test -f build/index.html"'
                 '''
             }
         }

@@ -49,6 +49,7 @@ pipeline {
                     npm config set cache $PWD/.npm
                     export PATH=$PWD/.npm-global/bin:$PATH
                     echo "Test stage"
+                    ls -l
                     sh 'test -f build/index.html'
                 '''
             }
